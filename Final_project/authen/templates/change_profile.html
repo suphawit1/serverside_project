@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Product Order{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">เปลื่ยนชื่อผู้ใช้และรหัสผ่าน</h2>
+    <div class="center">
+        <form method="POST">
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ user_form.username.label }}</label>
+                {{ user_form.username }}
+                <div class="form-text text-danger">{{ user_form.username.errors }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ pass_form.old_password.label }}</label>
+                {{ pass_form.old_password }}
+                <div class="form-text text-danger">{{ pass_form.old_password.errors }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ pass_form.new_password1.label }}</label>
+                {{ pass_form.new_password1 }}
+                <div class="form-text text-danger">{{ pass_form.new_password1.errors }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ pass_form.new_password2.label }}</label>
+                {{ pass_form.new_password2 }}
+                <div class="form-text text-danger">{{ pass_form.new_password2.errors }}</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

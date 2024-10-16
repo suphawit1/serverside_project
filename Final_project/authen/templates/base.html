@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    {% block head %}{% endblock %}
+  </head>
+
+  <div>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Sales record </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'product-list' %}">Product</a>
+                    </li>
+                    {% if perms.record.add_sellorder %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'productsell' %}">Sell</a>
+                      </li>
+                    {% endif %}
+                    {% if perms.record.view_transaction %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'record' %}">Record</a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                </ul>
+                <div class="d-flex">
+                  {% if user.is_authenticated %}
+                    <div>
+                      <span class="navbar-text me-2 text-light">
+                          Welcome, <a href="{% url 'profile' %}">{{user.username}}</a>
+                      </span>
+                      <a class="btn btn-outline-light" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                  {% else %}
+                    <a class="btn btn-outline-light me-2" href="{% url 'login' %}">Login</a>
+                  
+                  {% endif %}
+              </div>
+            </div>
+        </div>
+    </nav>
+    </header>
+</div>
+
+  <body>
+    <main>
+
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+
+  {% block script %}
+  {% endblock %}
+</html>

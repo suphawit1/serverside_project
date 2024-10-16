@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Product Order{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="/media/profile.png" alt="Profile Picture" class="rounded-circle mb-3" width="150" height="150">
+                        <h1 class="display-4">{{user.first_name}} {{user.last_name}}</h1>
+                        <p class="lead text-muted">
+                            {% for group in user.groups.all %}
+                                {{ group.name }}
+                            {% empty %}
+                                ไม่มีต่ำแหน่ง
+                            {% endfor %}</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h3 class="h5 text-muted">ชื่อ</h3>
+                            <p class="fs-4">{{user.first_name}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h5 text-muted">นามสกุล</h3>
+                            <p class="fs-4">{{user.last_name}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h5 text-muted">ต่ำแหน่ง</h3>
+                            <p class="fs-4">
+                                {% for group in user.groups.all %}
+                                    {{ group.name }}
+                                {% empty %}
+                                    ไม่มีต่ำแหน่ง
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h5 text-muted">Email</h3>
+                            <p class="fs-4">{{user.email}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h5 text-muted">Username</h3>
+                            <p class="fs-4">{{user.username}}</p>
+                        </div>
+                    </div>  
+                    <div class="text-center mt-5">
+                        <a href="{% url 'profile-change' %}" class="btn btn-primary btn-lg px-5 py-3 fs-5">เปลื่ยนชื่อผู้ใช้และรหัสผ่าน</a>
+                        {% if perms.auth.add_user %}
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-5 py-3 fs-5">สร้างบัญชีพนักงาน</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
