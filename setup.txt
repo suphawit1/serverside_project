@@ -1,0 +1,4 @@
+pip install virtualenv
+py -m venv myvenv
+myvenv\Scripts\activate.bat
+pip install django psycopg2 pillow
