@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Product{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="container mt-4">
+            <h1 class="mb-4">รายการสินค้า</h1>
+            <div class="row mb-4">
+                <form method="get" style="all:unset; width:100%;">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="ชื่อสินค้า">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+            {%for pro in product %}
+                <div class="col">
+                    <div class="card product-card">
+                        <div class="category-container">
+                            {% for cate in pro.category.all %}
+                                <span class="badge bg-primary category-badge">{{ cate.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% if pro.image %}
+                            <img src="{{ pro.image.url }}" class="card-img-top product-image" alt="{{ pro.name }}">
+                        {% else %}
+                            <img src="/media/no-image-icon.png" class="card-img-top product-image" alt="No Image Available">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{pro.name}}</h5>
+                            <p class="card-text">Quantity: {{pro.quantity}}</p>
+                            <div class="d-flex justify-content-between">
+                                {% if perms.product.change_product %}
+                                    <a href="{%url 'edit-product' pro.id %}" class="btn btn-sm btn-outline-primary">แก้ไข</a>
+                                    <a href="{%url 'delete-product' pro.id %}" class="btn btn-sm btn-outline-danger">ลบ</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor%}
+        </div>
+        
+    </div>
+    {% if perms.record.add_purchaseorders %}
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-4 text-start">
+                        <a href="{% url 'select-supuplier' %}" class="btn btn-primary">สั่งซื้อสินค้า</a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <a href="{% url 'add-product' %}" class="btn btn-success">เพิ่มสินค้าใหม่</a>
+                    </div>
+                    <div class="col-4 text-end">
+                        <a href="{% url 'category' %}" class="btn btn-info">หมวดหมู่สินค้า</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    {% endif %}
+    
+{% endblock %}

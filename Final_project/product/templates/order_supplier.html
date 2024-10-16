@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Select Supplier{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">เลือกผู้จัดจำหน่าย</h2>
+    <div class="center">
+        <form method="get" action="{% url 'product-order' %}">
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">{{ form.supplier.label }} <a href="{% url 'add-supuplier' %}" class="blue-link">เพิ่มผู้จัดจำหน่ายใหม่</a></label>
+                {{ form.supplier }}
+                <div class="form-text text-danger">{{ form.supplier.errors }}</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Order</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
