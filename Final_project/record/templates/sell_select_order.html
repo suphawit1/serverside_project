@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}SellProduct{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">เลือกสินค้าที่ขาย</h1>
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <form method="get" style="all:unset; width:100%;">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="ชื่อสินค้า">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="all:unset" id="product-form" action="{% url 'product-sell' %}" method="get">
+        {% csrf_token %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+            {% for pro in product%}
+            <div class="col">
+                <div class="card product-card">
+                    <label class="card-check-label">
+                        <input type="checkbox" name="products[]" value="{{pro.id}}" class="card-check-input">
+                        <div class="card h-100">
+                            <div class="category-container">
+                                {% for cate in pro.category.all %}
+                                    <span class="badge bg-primary category-badge">{{ cate.name }}</span>
+                                {% endfor %}
+                            </div>
+                            {% if pro.image %}
+                                <img src="{{ pro.image.url }}" class="card-img-top product-image" alt="{{ pro.name }}">
+                            {% else %}
+                                <img src="/media/no-image-icon.png" class="card-img-top product-image" alt="No Image Available">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{pro.name}}</h5>
+                                <p class="card-text">ราคา: {{pro.price}} บาท</p>
+                                <p class="card-text">จำนวนคงเหลือ: {{pro.quantity}}</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-end">
+                <button type="submit" form="product-form" class="btn btn-primary btn-lg">ยืนยันสินค้า</button>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}

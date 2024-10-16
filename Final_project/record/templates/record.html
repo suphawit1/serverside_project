@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Record{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="mb-4">ประวัติการซื้อขาย</h1>
+    <form method="get" style="all: unset;"> 
+        <input name="type" value="{{type}}" type="hidden">
+        <div class="mb-4">
+            <button type="submit" name="All_button" class="btn btn-{% if type == 'all' or type == None %}primary{% else %}outline-primary{% endif %} filter-btn" value="All">All</button>
+            <button type="submit" name="Buy_button" class="btn btn-{% if type == 'buy' %}primary{% else %}outline-primary{% endif %} filter-btn" value="Buy">Buy Only</button>
+            <button type="submit" name="Sell_button" class="btn btn-{% if type == 'sell' %}primary{% else %}outline-primary{% endif %} filter-btn" value="Sell">Sell Only</button>
+        </div>
+
+        <div class="row mb-4 align-items-end">
+            <div class="col-md-2">
+                <label for="start_date" class="form-label">{{form.start_date.label}}</label>
+                {{form.start_date}}
+            </div>
+            <div class="col-md-2">
+                <label for="end_date" class="form-label">{{form.end_date.label}}</label>
+                {{form.end_date}}
+            </div>
+            <div class="col-md-2">
+                <label for="sort_by" class="form-label">{{form.sort_by.label}}</label>
+                {{form.sort_by}}
+            </div>
+            <div class="col-md-2">
+                <label for="sort_order" class="form-label">{{form.sort_order.label}}</label>
+                {{form.sort_order}}
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    {{form.group_products}}
+                    {{form.group_products.label}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" name="Filter" class="btn btn-outline-info">กรองข้อมูล</button>
+            </div>
+                
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="sortable" data-sort="date">Date</th>
+                    <th class="sortable" data-sort="productName">Product Name</th>
+                    <th class="sortable" data-sort="quantity">Quantity</th>
+                    <th class="sortable" data-sort="totalCost">Total Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.product__name }}</td>
+                        <td>{{ transaction.quantity }}</td>
+                        <td class="{% if transaction.type == 'buy' %}text-danger{% else %}text-success{% endif %}">
+                            {{ transaction.total_cost }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end {% if profit < 0 %}text-danger{% else %}text-success{% endif %}"><strong>Total Profit: {{ profit }}</strong></td>
+                    <td id="totalProfit" class="fw-bold"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+{% endblock %}
